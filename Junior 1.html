@@ -273,7 +273,7 @@
         /* Signatures Container Layout Adjustments */
         .signatures-container {
             display: flex; 
-            flex-direction: row-reverse; /* يجعل الخانة الأولى تظهر على اليمين والثانية في المنتصف */
+            flex-direction: row-reverse;
             justify-content: space-between;
             gap: 15px; 
             text-align: center;
@@ -291,7 +291,7 @@
         }
 
         .signature-box.spacer {
-            visibility: hidden; /* مساحة فارغة في اليسار لتحقيق توازن المحاذاة */
+            visibility: hidden;
         }
 
         .signature-box strong { 
@@ -332,8 +332,22 @@
             table.report-table { background-color: #ffffff !important; font-size: 0.8rem !important; width: 100% !important; }
             table.report-table th, table.report-table td { border: 1px solid #000000 !important; color: #000000 !important; padding: 6px 4px !important; }
 
-            .signatures-container { display: table !important; width: 100% !important; border-top: 1px dashed #000000 !important; margin-top: 8px !important; padding-top: 6px !important; }
-            .signature-box { display: table-cell !important; width: 33.33% !important; color: #000000 !important; font-size: 0.75rem !important; text-align: center !important; }
+            /* تعديل خصائص التوقيعات في الطباعة لتطابق الشاشة تماماً */
+            .signatures-container { 
+                display: flex !important; 
+                flex-direction: row-reverse !important;
+                justify-content: space-between !important;
+                width: 100% !important; 
+                border-top: 1px dashed #000000 !important; 
+                margin-top: 8px !important; 
+                padding-top: 6px !important; 
+            }
+            .signature-box { 
+                flex: 1 !important;
+                color: #000000 !important; 
+                font-size: 0.75rem !important; 
+                text-align: center !important; 
+            }
 
             .no-print, .actions, #searchSection { display: none !important; }
         }
