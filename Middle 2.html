@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Middle 2 - Student Results Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --rose-bg: #fff5f7;
+            --rose-card: rgba(255, 255, 255, 0.95);
+            --rose-primary: #f472b6;
+            --rose-hover: #ec4899;
+            --rose-light: #fce7f3;
+            --purple-accent: #c084fc;
+            --text-title: #471825;
+            --text-subtitle: #835261;
+            --text-body: #5c3d46;
+            --card-border: #fbcfe8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #fff0f5 0%, #f3e8ff 50%, #e0f2fe 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: var(--text-body);
+        }
+
+        .container {
+            background: var(--rose-card);
+            padding: 35px 30px;
+            border-radius: 28px;
+            box-shadow: 0 20px 40px rgba(244, 114, 182, 0.15);
+            width: 100%;
+            max-width: 1050px;
+            text-align: center;
+            border: 2px solid #ffffff;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .container.search-mode {
+            max-width: 550px;
+        }
+
+        .logo-wrapper {
+            width: 90px;
+            height: 90px;
+            margin: 0 auto 15px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 3px solid var(--rose-primary);
+            box-shadow: 0 0 20px rgba(244, 114, 182, 0.3);
+        }
+
+        .logo-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .school-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text-title);
+            margin-bottom: 6px;
+            background: linear-gradient(45deg, #db2777, #9333ea);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: var(--text-subtitle);
+            margin-bottom: 25px;
+            font-weight: 500;
+        }
+
+        /* Form Styling */
+        .id-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--rose-primary);
+            font-size: 18px;
+        }
+
+        .id-input {
+            width: 100%;
+            padding: 15px 15px 15px 45px;
+            border-radius: 16px;
+            border: 2px solid var(--card-border);
+            outline: none;
+            font-size: 15px;
+            transition: 0.3s;
+            background: #ffffff;
+            color: var(--text-title);
+        }
+
+        .id-input:focus {
+            border-color: var(--rose-primary);
+            box-shadow: 0 0 12px rgba(244, 114, 182, 0.3);
+        }
+
+        .submit-btn {
+            background: linear-gradient(45deg, var(--rose-primary), var(--rose-hover));
+            color: #fff;
+            border: none;
+            padding: 15px;
+            border-radius: 16px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 5px 15px rgba(236, 72, 153, 0.3);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(236, 72, 153, 0.4);
+        }
+
+        /* Report Form Styling */
+        .school-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #533d08;
+            padding-bottom: 15px;
+        }
+
+        .header-left {
+            text-align: left;
+            line-height: 1.5;
+            font-size: 0.95rem;
+            font-weight: bold;
+            color: #0b1016;
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .school-logo {
+            max-height: 75px;
+            object-fit: contain;
+        }
+
+        .report-subtitle {
+            color: #533d08; 
+            font-size: 1.25rem;
+            font-weight: bold;
+            text-align: center;  
+            margin-top: 5px;
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .report-subtitle::after {
+            content: "";          
+            display: block;       
+            width: 60px;          
+            height: 3px;          
+            background-color: #533d08; 
+            margin: 8px auto 0 auto; 
+            border-radius: 2px;   
+        }
+
+        .student-info {
+            background-color: #fcf8f8;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            padding: 12px 20px;
+            margin-bottom: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            text-align: left;
+        }
+
+        .info-item { 
+            font-size: 0.95rem; 
+            flex: 1;
+            min-width: 200px;
+            color: #334155;
+        }
+        .info-item span { color: #64748b; font-size: 0.85rem; }
+        .info-item strong { color: #533d08; font-size: 1.05rem; }
+
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            border-radius: 10px;
+            border: 2px solid #000000;
+            margin-bottom: 15px;
+        }
+
+        table.report-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #ffffff;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        table.report-table th, table.report-table td {
+            padding: 8px 6px;
+            border: 1px solid #000000;
+            color: #000000;
+        }
+
+        table.report-table th {
+            background-color: #d9d9d9;
+            font-weight: bold;
+        }
+
+        .mark-row th {
+            background-color: #f8cbad !important;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
+        .row-subject-name {
+            font-weight: bold;
+            text-align: center;
+            background-color: #ffffff;
+            font-size: 0.95rem;
+        }
+
+        .section-divider-row td {
+            background-color: #f1f5f9;
+            font-weight: bold;
+            font-size: 0.95rem;
+            padding: 7px;
+            letter-spacing: 0.5px;
+        }
+
+        .total-col-cell {
+            font-weight: bold;
+            background-color: #f8fafc;
+        }
+
+        /* Signatures Container */
+        .signatures-container {
+            display: flex; 
+            flex-direction: row-reverse;
+            justify-content: space-between;
+            gap: 15px; 
+            text-align: center;
+            margin-top: 20px; 
+            padding-top: 12px; 
+            border-top: 1px dashed #cbd5e1;
+        }
+
+        .signature-box { 
+            flex: 1; 
+            min-width: 220px; 
+            font-size: 0.88rem; 
+            color: #475569; 
+            line-height: 1.5; 
+        }
+
+        .signature-box.spacer {
+            visibility: hidden;
+        }
+
+        .signature-box strong { 
+            display: block; 
+            color: #0c0606; 
+            font-size: 0.95rem; 
+            margin-top: 3px; 
+        }
+
+        .actions { text-align: center; margin-top: 20px; display: flex; justify-content: center; gap: 15px; }
+
+        .action-btn {
+            display: inline-flex; align-items: center; gap: 8px; color: #ffffff; background-color: #533d08;
+            text-decoration: none; font-weight: bold; padding: 10px 25px; border-radius: 10px; font-size: 0.9rem;
+            border: none; cursor: pointer; transition: 0.2s;
+        }
+        .action-btn:hover { opacity: 0.9; transform: translateY(-2px); }
+
+        .hidden { display: none !important; }
+
+        /* Print Media Styling */
+        @media print {
+            @page { size: A4 portrait; margin: 6mm 8mm !important; }
+            body { background-color: #ffffff !important; color: #000000 !important; padding: 0 !important; margin: 0 !important; min-height: auto !important; display: block !important; }
+            .container { background-color: #ffffff !important; border: none !important; box-shadow: none !important; padding: 0 !important; max-width: 100% !important; width: 100% !important; display: block !important; }
+            .school-header { display: table !important; width: 100% !important; border-bottom: 2px solid #000000 !important; margin-bottom: 8px !important; padding-bottom: 6px !important; }
+            .header-left { display: table-cell !important; text-align: left !important; color: #000000 !important; font-size: 0.85rem !important; }
+            .header-right { display: table-cell !important; text-align: right !important; vertical-align: middle !important; }
+            .school-logo { max-height: 55px !important; }
+
+            .report-subtitle { color: #000000 !important; font-size: 1.05rem !important; margin-top: 2px !important; margin-bottom: 8px !important; }
+            
+            .student-info { display: table !important; width: 100% !important; background-color: #ffffff !important; border: 1px solid #000000 !important; padding: 6px 10px !important; margin-bottom: 8px !important; }
+            .info-item { display: table-cell !important; width: 33.33% !important; font-size: 0.85rem !important; }
+            
+            .table-container { border: 2px solid #000000 !important; margin-bottom: 10px !important; }
+            table.report-table { background-color: #ffffff !important; font-size: 0.82rem !important; width: 100% !important; }
+            table.report-table th, table.report-table td { border: 1px solid #000000 !important; color: #000000 !important; padding: 5px 4px !important; }
+            .mark-row th { background-color: #f8cbad !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            table.report-table th { background-color: #d9d9d9 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+            .signatures-container { 
+                display: flex !important; 
+                flex-direction: row-reverse !important;
+                justify-content: space-between !important;
+                width: 100% !important; 
+                border-top: 1px dashed #000000 !important; 
+                margin-top: 10px !important; 
+                padding-top: 8px !important; 
+            }
+            .signature-box { 
+                flex: 1 !important;
+                color: #000000 !important; 
+                font-size: 0.8rem !important; 
+                text-align: center !important; 
+            }
+
+            .no-print, .actions, #searchSection { display: none !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="mainContainer" class="container search-mode">
+        
+        <!-- 🔴 Stage 1: ID Search Input -->
+        <div id="searchSection">
+            <div class="logo-wrapper">
+                <img src="logo.jpg" alt="Girls School Logo" onerror="this.src='https://via.placeholder.com/90/fce7f3/db2777?text=SLS';">
+            </div>
+            <h1 class="school-title">New Sidi Gaber Language School Ring Road for Girls</h1>
+            <p class="subtitle">Middle 2 Student Performance Report Portal</p>
+
+            <div class="id-form">
+                <div class="input-group">
+                    <i class="fa-solid fa-id-card"></i>
+                    <input type="text" id="nationalIdInput" class="id-input" placeholder="Enter Student National ID" maxlength="14">
+                </div>
+                <button class="submit-btn" onclick="fetchStudentReport()">
+                    View Student Result <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+
+            <div class="actions" style="margin-top: 15px;">
+                <a href="index.html" class="action-btn" style="background: transparent; color: var(--text-subtitle); border: 1px solid var(--card-border);">
+                    <i class="fa-solid fa-arrow-left"></i> Back to Main Portal
+                </a>
+            </div>
+        </div>
+
+        <!-- 🟢 Stage 2: Comprehensive Report Card Table -->
+        <div id="reportSection" class="hidden">
+            <div class="school-header">
+                <div class="header-left">
+                    Alexandria Governorate<br>
+                    Middle Education Zone<br>
+                    Sidi Gaber Language School Ring Road for Girls
+                </div>
+                <div class="header-right">
+                    <img src="logo.jpg" alt="School Logo" class="school-logo" onerror="this.src='https://via.placeholder.com/75/fce7f3/db2777?text=SLS';">
+                </div>
+            </div>
+
+            <p class="report-subtitle">Report - Middle Two</p>
+                
+            <div id="report-content">
+                <!-- Data inserted dynamically -->
+            </div>
+
+            <div class="actions no-print">
+                <button onclick="newSearch()" class="action-btn" style="background-color: #64748b;">
+                    <i class="fa-solid fa-magnifying-glass"></i> Search Another ID
+                </button>
+                <button onclick="window.print()" class="action-btn">
+                    <i class="fa-solid fa-print"></i> Print Report
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function parseCSVLine(text, delimiter) {
+            let result = [];
+            let cell = '';
+            let inQuotes = false;
+            for (let i = 0; i < text.length; i++) {
+                let c = text[i];
+                if (c === '"') { inQuotes = !inQuotes; }
+                else if (c === delimiter && !inQuotes) {
+                    result.push(cell.trim());
+                    cell = '';
+                } else { cell += c; }
+            }
+            result.push(cell.trim());
+            return result;
+        }
+
+        async function fetchStudentReport() {
+            const idVal = document.getElementById('nationalIdInput').value.trim();
+            if (!idVal) {
+                alert('Please enter National ID');
+                return;
+            }
+
+            try {
+                // إضافة cache: 'no-store' لقراءة أحدث نسخة من الملف دائماً
+                const response = await fetch('Middle 2.csv?t=' + new Date().getTime(), { cache: 'no-store' });
+                if (!response.ok) throw new Error("Could not load database file (Middle 2.csv).");
+                const csvText = await response.text();
+                processFullReport(csvText, idVal);
+            } catch (err) {
+                alert("Error: " + err.message);
+            }
+        }
+
+        function processFullReport(csvText, idToFind) {
+            const lines = csvText.split(/\r?\n/).map(line => line.trim()).filter(line => line.length > 0);
+            if (lines.length === 0) {
+                alert('Database file (Middle 2.csv) is empty!');
+                return;
+            }
+
+            const delimiter = lines[0].includes(';') ? ';' : ',';
+            const headers = parseCSVLine(lines[0], delimiter).map(h => h.replace(/^"|"$/g, '').trim());
+            let studentData = null;
+
+            let idIndex = headers.indexOf('ID');
+            if (idIndex === -1) idIndex = headers.indexOf('NationalID');
+            if (idIndex === -1) idIndex = 0;
+
+            for (let i = 1; i < lines.length; i++) {
+                const columns = parseCSVLine(lines[i], delimiter).map(c => c.replace(/^"|"$/g, '').trim());
+                if (columns[idIndex] === idToFind) {
+                    studentData = columns;
+                    break;
+                }
+            }
+
+            if (!studentData) {
+                alert(`The National ID (${idToFind}) is not registered in Middle 2 database.`);
+                return;
+            }
+
+            const getVal = (headerName) => {
+                const idx = headers.indexOf(headerName);
+                if (idx !== -1 && studentData[idx] !== undefined && studentData[idx] !== '') {
+                    return studentData[idx];
+                }
+                return '-';
+            };
+
+            const numVal = (val) => {
+                const parsed = parseFloat(val);
+                return isNaN(parsed) ? 0 : parsed;
+            };
+
+            // دالة مساعدة لجلب بيانات كل مادة وحساب المجموع (Weekly + Homework + Behavior = 40)
+            const getSubjectData = (weeklyCol, hwCol, behaviorCol, totalCol, monthlyCol) => {
+                const weekly = getVal(weeklyCol);
+                const hw = getVal(hwCol);
+                const behavior = getVal(behaviorCol);
+                const monthly = getVal(monthlyCol);
+                let total = getVal(totalCol);
+
+                if (total === '-') {
+                    total = numVal(weekly) + numVal(hw) + numVal(behavior);
+                }
+                return { weekly, hw, behavior, total, monthly };
+            };
+
+            const name = getVal('StudentNameEnglish');
+            const studentClass = getVal('Class');
+
+            // 1. المواد داخل المجموع
+            const arabic = getSubjectData('Arabic_WeeklyEvaluation', 'Arabic_Homework', 'Arabic_Behavior', 'Arabic_Total', 'Arabic_MonthlyTest');
+            const engOL = getSubjectData('EnglishOL_WeeklyEvaluation', 'EnglishOL_Homework', 'EnglishOL_Behavior', 'EnglishOL_Total', 'EnglishOL_MonthlyTest');
+            const ss = getSubjectData('SocialStudies_WeeklyEvaluation', 'SocialStudies_Homework', 'SocialStudies_Behavior', 'SocialStudies_Total', 'SocialStudies_MonthlyTest');
+            const math = getSubjectData('Math_WeeklyEvaluation', 'Math_HomeworkBook', 'Math_Behavior', 'Math_Total', 'Math_MonthlyTest');
+            const science = getSubjectData('Science_WeeklyEvaluation', 'Science_Homework', 'Science_Behavior', 'Science_Total', 'Science_MonthlyTest');
+
+            // 2. المواد خارج المجموع (Subjects not Included in Total)
+            const religion = getSubjectData('Religion_WeeklyEvaluation', 'Religion_Homework', 'Religion_Behavior', 'Religion_Total', 'Religion_MonthlyTest');
+            const art = getSubjectData('Art_WeeklyEvaluation', 'Art_Homework', 'Art_Behavior', 'Art_Total', 'Art_MonthlyTest');
+            // ملاحظة: عمود السلوك للكمبيوتر مكتوب Cmoputer_Behavior في الشيت، لذا نتحقق من الاسمين احتياطياً
+            const compBehaviorCol = headers.includes('Cmoputer_Behavior') ? 'Cmoputer_Behavior' : 'Computer_Behavior';
+            const computer = getSubjectData('Computer_WeeklyEvaluation', 'Computer_Homework', compBehaviorCol, 'Computer_Total', 'Computer_MonthlyTest');
+            const engAL = getSubjectData('EngAl_WeeklyEvaluation', 'EngAl_Homework', 'EngAl_Behavior', 'EngAl_Total', 'EngAl_MonthlyTest');
+            const french = getSubjectData('French_WeeklyEvaluation', 'French_Homework', 'French_Behavior', 'French_Total', 'French_MonthlyTest');
+
+            const renderSubjectRow = (label, data) => `
+                <tr>
+                    <td class="row-subject-name">${label}</td>
+                    <td>${data.weekly}</td>
+                    <td>${data.hw}</td>
+                    <td>${data.behavior}</td>
+                    <td class="total-col-cell">${data.total}</td>
+                    <td>${data.monthly}</td>
+                </tr>
+            `;
+
+            // 3. بناء التقرير مطابق تماماً للصورة
+            let reportHTML = `
+                <div class="student-info">
+                    <div class="info-item"><span>Student Name:</span> <br><strong>${name}</strong></div>
+                    <div class="info-item"><span>National ID:</span> <br><strong>${idToFind}</strong></div>
+                    <div class="info-item"><span>Class:</span> <br><strong>${studentClass}</strong></div>
+                </div>
+
+                <div class="table-container">
+                    <table class="report-table">
+                        <thead>
+                            <tr>
+                                <th rowspan="2" style="width: 170px; vertical-align: middle; font-size: 1.05rem;">Subject</th>
+                                <th colspan="5" style="font-size: 1.05rem; padding: 8px;">October School Year 2026/2027</th>
+                                <th rowspan="3" style="width: 130px; vertical-align: middle;">Parent's signature</th>
+                            </tr>
+                            <tr>
+                                <th style="width: 105px;">Weekly Evaluation</th>
+                                <th style="width: 95px;">Homework</th>
+                                <th style="width: 115px;">Attendance & Conduct</th>
+                                <th style="width: 85px;">Total</th>
+                                <th style="width: 95px;">Monthly Test</th>
+                            </tr>
+                            <tr class="mark-row">
+                                <th style="background-color: #f8cbad !important;">Mark</th>
+                                <th>20</th>
+                                <th>10</th>
+                                <th>10</th>
+                                <th>40</th>
+                                <th>15</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="row-subject-name">Arabic</td>
+                                <td>${arabic.weekly}</td>
+                                <td>${arabic.hw}</td>
+                                <td>${arabic.behavior}</td>
+                                <td class="total-col-cell">${arabic.total}</td>
+                                <td>${arabic.monthly}</td>
+                                <td rowspan="11" style="background-color: #ffffff;"></td>
+                            </tr>
+                            ${renderSubjectRow('English (O.L)', engOL)}
+                            ${renderSubjectRow('Social Studies', ss)}
+                            ${renderSubjectRow('Mathematics', math)}
+                            ${renderSubjectRow('Science', science)}
+                            
+                            <tr class="section-divider-row">
+                                <td colspan="6">Subjects not Included in Total</td>
+                            </tr>
+
+                            ${renderSubjectRow('Religion', religion)}
+                            ${renderSubjectRow('Art', art)}
+                            ${renderSubjectRow('Computer', computer)}
+                            ${renderSubjectRow('English (A.L)', engAL)}
+                            ${renderSubjectRow('French', french)}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="signatures-container">
+                    <div class="signature-box">
+                        School Principal
+                        <strong>Mrs. Jihan Abd El Wahab</strong>
+                    </div>
+                    <div class="signature-box">
+                        Head of Control
+                        <strong>Miss. Noha Kamal</strong>
+                    </div>
+                    <div class="signature-box spacer"></div>
+                </div>
+            `;
+
+            document.getElementById('report-content').innerHTML = reportHTML;
+            
+            document.getElementById('searchSection').classList.add('hidden');
+            document.getElementById('reportSection').classList.remove('hidden');
+            document.getElementById('mainContainer').classList.remove('search-mode');
+        }
+
+        function newSearch() {
+            document.getElementById('nationalIdInput').value = '';
+            document.getElementById('reportSection').classList.add('hidden');
+            document.getElementById('searchSection').classList.remove('hidden');
+            document.getElementById('mainContainer').classList.add('search-mode');
+        }
+    </script>
+</body>
+</html>
